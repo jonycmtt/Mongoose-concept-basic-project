@@ -15,6 +15,7 @@ const userGuardianSchema = z.object({
 
 const studentSchemaValidateWithZod = z.object({
   id: z.string(),
+  password: z.string().max(20),
   name: userNameSchema,
   gender: z.enum(['male', 'female']),
   dateOfBirth: z.string().optional(),
@@ -29,6 +30,7 @@ const studentSchemaValidateWithZod = z.object({
   guardian: userGuardianSchema,
   avatar: z.string().optional(),
   isActive: z.enum(['active', 'inActive']).default('active'),
+  isDeleted: z.boolean(),
 });
 
 export default studentSchemaValidateWithZod;

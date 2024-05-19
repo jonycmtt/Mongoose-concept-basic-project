@@ -17,6 +17,7 @@ export type userGuardian = {
 
 export type Student = {
   id: string;
+  password: string;
   name: UserName;
   gender: 'male' | 'female';
   dateOfBirth: string;
@@ -29,6 +30,7 @@ export type Student = {
   guardian: userGuardian;
   avatar?: string | undefined;
   isActive: 'active' | 'inActive';
+  isDeleted: boolean;
 };
 
 //for creating static method

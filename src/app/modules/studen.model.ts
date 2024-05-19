@@ -6,6 +6,8 @@ import {
   userGuardian,
 } from './student/student.interface';
 import validator from 'validator';
+import bcrypt from 'bcrypt';
+import config from '../config';
 
 const userSchema = new Schema<UserName>({
   firstName: {
@@ -60,6 +62,11 @@ const guardianSchema = new Schema<userGuardian>({
 
 const studentSchema = new Schema<Student, CustomStaticStudentModel>({
   id: { type: String, required: true, unique: true },
+  password: {
+    type: String,
+    required: [true, 'Password is Required'],
+    maxlength: [20, 'Password can not be more than 20 characters'],
+  },
   name: {
     type: userSchema,
     required: true,
@@ -100,6 +107,40 @@ const studentSchema = new Schema<Student, CustomStaticStudentModel>({
     enum: ['active', 'inActive'],
     default: 'active',
   },
+  isDeleted: {
+    type: Boolean,
+    default: false,
+  },
+});
+
+// doc middleware
+studentSchema.pre('save', async function (next) {
+  // console.log(this, 'we will save data');
+
+  // hashing password and save  into DB
+  const user = this;
+  user.password = await bcrypt.hash(
+    user.password,
+    Number(config.bcrypt_salt_rounds),
+  );
+  next();
+});
+
+// doc middleware
+studentSchema.post('save', function (doc, next) {
+  // console.log(this, 'we will our save data');
+  doc.password = '****';
+  next();
+});
+
+// Query Middleware
+studentSchema.pre('find', function (next) {
+  this.find({ isDeleted: { $ne: true } });
+  next();
+});
+studentSchema.pre('findOne', function (next) {
+  this.find({ isDeleted: { $ne: true } });
+  next();
 });
 
 //creating a custom static method
