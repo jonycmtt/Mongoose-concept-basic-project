@@ -1,5 +1,10 @@
 import { Schema, model } from 'mongoose';
-import { Student, UserName, userGuardian } from './student/student.interface';
+import {
+  CustomStaticStudentModel,
+  Student,
+  UserName,
+  userGuardian,
+} from './student/student.interface';
 import validator from 'validator';
 
 const userSchema = new Schema<UserName>({
@@ -8,17 +13,17 @@ const userSchema = new Schema<UserName>({
     required: [true, 'First Name Required'],
     trim: true,
     maxlength: [20, 'Name can not be more than 20'],
-    validate: {
-      validator: function (value: string) {
-        const firstNameStr = value.charAt(0).toUpperCase() + value.slice(1);
-        // if (value !== firstNameStr) {
-        //   return false;
-        // }
-        // return true;
-        return value === firstNameStr;
-      },
-      message: `{VALUE} is not in capitalize format`,
-    },
+    // validate: {
+    //   validator: function (value: string) {
+    //     const firstNameStr = value.charAt(0).toUpperCase() + value.slice(1);
+    //     // if (value !== firstNameStr) {
+    //     //   return false;
+    //     // }
+    //     // return true;
+    //     return value === firstNameStr;
+    //   },
+    //   message: `{VALUE} is not in capitalize format`,
+    // },
   },
   middleName: {
     type: String,
@@ -27,10 +32,10 @@ const userSchema = new Schema<UserName>({
   lastName: {
     type: String,
     required: [true, 'Last Name Required'],
-    validate: {
-      validator: (value: string) => validator.isAlpha(value),
-      message: `{VALUE} is not in alpha format`,
-    },
+    // validate: {
+    //   validator: (value: string) => validator.isAlpha(value),
+    //   message: `{VALUE} is not in alpha format`,
+    // },
   },
 });
 
@@ -53,7 +58,7 @@ const guardianSchema = new Schema<userGuardian>({
   },
 });
 
-const studentSchema = new Schema<Student>({
+const studentSchema = new Schema<Student, CustomStaticStudentModel>({
   id: { type: String, required: true, unique: true },
   name: {
     type: userSchema,
@@ -97,5 +102,20 @@ const studentSchema = new Schema<Student>({
   },
 });
 
+//creating a custom static method
+studentSchema.statics.isUserExists = async function (id: string) {
+  const existingUser = await StudentModel.findOne({ id });
+  return existingUser;
+};
+
+//creating a custom instance method
+// studentSchema.methods.isUserExists = async function (id: string) {
+//   const existingUser = await StudentModel.findOne({ id });
+//   return existingUser;
+// };
+
 // model defined
-export const StudentModel = model<Student>('Student', studentSchema);
+export const StudentModel = model<Student, CustomStaticStudentModel>(
+  'Student',
+  studentSchema,
+);
