@@ -13,17 +13,6 @@ const userSchema = new Schema<UserName>({
     required: [true, 'First Name Required'],
     trim: true,
     maxlength: [20, 'Name can not be more than 20'],
-    // validate: {
-    //   validator: function (value: string) {
-    //     const firstNameStr = value.charAt(0).toUpperCase() + value.slice(1);
-    //     // if (value !== firstNameStr) {
-    //     //   return false;
-    //     // }
-    //     // return true;
-    //     return value === firstNameStr;
-    //   },
-    //   message: `{VALUE} is not in capitalize format`,
-    // },
   },
   middleName: {
     type: String,
@@ -79,7 +68,7 @@ const studentSchema = new Schema<Student, CustomStaticStudentModel>(
       },
       required: true,
     },
-    dateOfBirth: { type: String },
+    dateOfBirth: { type: Date },
     email: {
       type: String,
       required: true,

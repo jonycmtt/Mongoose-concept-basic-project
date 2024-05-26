@@ -21,7 +21,7 @@ export type Student = {
   password: string;
   name: UserName;
   gender: 'male' | 'female';
-  dateOfBirth: string;
+  dateOfBirth: Date;
   email: string;
   contactNo: number;
   emergencyContactNo?: string;
