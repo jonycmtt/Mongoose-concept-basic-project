@@ -19,7 +19,7 @@ const CreateStudentSchemaValidateWithZod = z.object({
     student: z.object({
       name: userNameSchema,
       gender: z.enum(['male', 'female']),
-      dateOfBirth: z.date().optional(),
+      dateOfBirth: z.string().optional(),
       email: z.string().email('Invalid email format'),
       contactNo: z.number(),
       emergencyContactNo: z.string(),
@@ -29,6 +29,7 @@ const CreateStudentSchemaValidateWithZod = z.object({
       presentAddress: z.string(),
       permanentAddress: z.string(),
       guardian: userGuardianSchema,
+      admissionSemester: z.string(),
       avatar: z.string().optional(),
     }),
   }),

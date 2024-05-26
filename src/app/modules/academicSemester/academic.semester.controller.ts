@@ -38,8 +38,24 @@ const getSingleAcademicSemester = catchAsync(async (req, res, next) => {
   });
 });
 
+const updateSingleAcademicSemester = catchAsync(async (req, res, next) => {
+  const { semesterId } = req.params;
+  const result =
+    await AcademicSemesterServices.updateSingleAcademicSemesterIntoDB(
+      semesterId,
+      req.body,
+    );
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Academic semester updated successfully',
+    data: result,
+  });
+});
+
 export const academicSemesterControllers = {
   createAcademicSemester,
   getAllAcademicSemester,
   getSingleAcademicSemester,
+  updateSingleAcademicSemester,
 };

@@ -30,6 +30,7 @@ export type Student = {
   permanentAddress: string;
   guardian: userGuardian;
   avatar?: string | undefined;
+  admissionSemester: Types.ObjectId;
   isDeleted: boolean;
 };
 

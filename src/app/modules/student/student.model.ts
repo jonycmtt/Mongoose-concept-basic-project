@@ -4,7 +4,7 @@ import {
   Student,
   UserName,
   userGuardian,
-} from './student/student.interface';
+} from './student.interface';
 import validator from 'validator';
 
 const userSchema = new Schema<UserName>({
@@ -91,6 +91,10 @@ const studentSchema = new Schema<Student, CustomStaticStudentModel>(
       required: true,
     },
     avatar: String,
+    admissionSemester: {
+      type: Schema.Types.ObjectId,
+      ref: 'AcademicSemester',
+    },
     isDeleted: {
       type: Boolean,
       default: false,
