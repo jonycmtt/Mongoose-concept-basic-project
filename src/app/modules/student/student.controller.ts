@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from 'express';
+import { NextFunction, Request, RequestHandler, Response } from 'express';
 import { StudentServices } from './student.service';
 import Joi from 'joi';
 import studentSchema from './student.joi.validation';
@@ -7,11 +7,7 @@ import studentSchemaValidateWithZod from './student.zod.validation';
 import sendResponse from '../../Utils/SendResponse';
 import httpStatus from 'http-status';
 
-const getAllStudents = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
+const getAllStudents: RequestHandler = async (req, res, next) => {
   try {
     const result = await StudentServices.getAllStudentFromDB();
     sendResponse(res, {
@@ -25,11 +21,7 @@ const getAllStudents = async (
   }
 };
 
-const getSingleStudent = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
+const getSingleStudent: RequestHandler = async (req, res, next) => {
   try {
     const { id } = req.params;
     const result = await StudentServices.getSingleStudentsDB(id);
@@ -44,11 +36,7 @@ const getSingleStudent = async (
   }
 };
 
-const deleteStudent = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
+const deleteStudent: RequestHandler = async (req, res, next) => {
   try {
     const { id } = req.params;
     const result = await StudentServices.deleteStudentsDB(id);
