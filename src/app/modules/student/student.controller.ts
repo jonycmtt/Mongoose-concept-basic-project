@@ -5,12 +5,7 @@ import { z } from 'zod';
 import studentSchemaValidateWithZod from './student.zod.validation';
 import sendResponse from '../../Utils/SendResponse';
 import httpStatus from 'http-status';
-
-const catchAsync = (fn: RequestHandler) => {
-  return (req: Request, res: Response, next: NextFunction) => {
-    Promise.resolve(fn(req, res, next)).catch((err) => next(err));
-  };
-};
+import catchAsync from '../../Utils/catchAsync';
 
 const getAllStudents = catchAsync(async (req, res, next) => {
   const result = await StudentServices.getAllStudentFromDB();
