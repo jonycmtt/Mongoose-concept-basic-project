@@ -34,7 +34,7 @@ const getSingleAcademicFaculty = catchAsync(async (req, res, next) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Academic Faculty Fatcing is Successfull',
+    message: 'Academic Faculty single Fatcing is Successfull',
     data: result,
   });
 });
