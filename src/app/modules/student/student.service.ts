@@ -1,4 +1,8 @@
+import mongoose, { mongo } from 'mongoose';
 import { StudentModel } from './student.model';
+import { userModel } from '../user/user.model';
+import AppError from '../../errors/AppError';
+import httpStatus from 'http-status';
 
 // get all data
 const getAllStudentFromDB = async () => {
@@ -20,8 +24,41 @@ const getSingleStudentsDB = async (id: string) => {
   return result;
 };
 const deleteStudentsDB = async (id: string) => {
-  const result = await StudentModel.updateOne({ id }, { isDeleted: true });
-  return result;
+  console.log(id);
+  const session = await mongoose.startSession();
+  try {
+    session.startTransaction();
+
+    const deleteStudent = await StudentModel.findOneAndUpdate(
+      { id },
+      { isDeleted: true },
+      {
+        new: true,
+        session,
+      },
+    );
+
+    if (!deleteStudent) {
+      throw new AppError(httpStatus.BAD_REQUEST, 'Failed to Delete student');
+    }
+
+    const deleteUser = await userModel.findOneAndUpdate(
+      { id },
+      { isDeleted: true },
+      { new: true, session },
+    );
+
+    if (!deleteUser) {
+      throw new AppError(httpStatus.BAD_REQUEST, 'Failed to Delete student');
+    }
+    await session.commitTransaction();
+    await session.endSession();
+
+    return deleteStudent;
+  } catch (err) {
+    await session.abortTransaction();
+    await session.endSession();
+  }
 };
 
 export const StudentServices = {

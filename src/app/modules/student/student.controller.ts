@@ -2,7 +2,6 @@ import { NextFunction, Request, RequestHandler, Response } from 'express';
 import { StudentServices } from './student.service';
 import studentSchema from './student.joi.validation';
 import { z } from 'zod';
-import studentSchemaValidateWithZod from './student.zod.validation';
 import sendResponse from '../../Utils/SendResponse';
 import httpStatus from 'http-status';
 import catchAsync from '../../Utils/catchAsync';
@@ -18,8 +17,8 @@ const getAllStudents = catchAsync(async (req, res, next) => {
 });
 
 const getSingleStudent = catchAsync(async (req, res, next) => {
-  const { id } = req.params;
-  const result = await StudentServices.getSingleStudentsDB(id);
+  const { studentId } = req.params;
+  const result = await StudentServices.getSingleStudentsDB(studentId);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
@@ -29,8 +28,8 @@ const getSingleStudent = catchAsync(async (req, res, next) => {
 });
 
 const deleteStudent = catchAsync(async (req, res, next) => {
-  const { id } = req.params;
-  const result = await StudentServices.deleteStudentsDB(id);
+  const { studentId } = req.params;
+  const result = await StudentServices.deleteStudentsDB(studentId);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
