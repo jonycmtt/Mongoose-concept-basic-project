@@ -7,7 +7,7 @@ const createAcademicDepartmentIntoDB = async (payload: TAcademicDepartment) => {
   // });
 
   // if (isExistsDepartment) {
-  //   throw new Error('Department Already Exists');
+  //   throw new AppError(404,'Department Already Exists');
   // }
   return await AcademicDepartmentModel.create(payload);
 };
