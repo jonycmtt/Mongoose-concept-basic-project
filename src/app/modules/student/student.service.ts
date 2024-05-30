@@ -24,10 +24,15 @@ const getSingleStudentsDB = async (id: string) => {
   return result;
 };
 const deleteStudentsDB = async (id: string) => {
-  console.log(id);
   const session = await mongoose.startSession();
   try {
     session.startTransaction();
+
+    const studentExists = await StudentModel.findOne({ id }).session(session);
+
+    if (!studentExists) {
+      throw new AppError(httpStatus.NOT_FOUND, 'Student Id not found');
+    }
 
     const deleteStudent = await StudentModel.findOneAndUpdate(
       { id },
@@ -40,6 +45,12 @@ const deleteStudentsDB = async (id: string) => {
 
     if (!deleteStudent) {
       throw new AppError(httpStatus.BAD_REQUEST, 'Failed to Delete student');
+    }
+
+    const userExists = await userModel.findOne({ id }).session(session);
+
+    if (!userExists) {
+      throw new AppError(httpStatus.NOT_FOUND, 'User Id not found');
     }
 
     const deleteUser = await userModel.findOneAndUpdate(
@@ -58,6 +69,7 @@ const deleteStudentsDB = async (id: string) => {
   } catch (err) {
     await session.abortTransaction();
     await session.endSession();
+    throw err;
   }
 };
 
