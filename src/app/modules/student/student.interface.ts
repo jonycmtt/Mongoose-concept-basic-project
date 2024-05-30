@@ -32,6 +32,7 @@ export type Student = {
   avatar?: string | undefined;
   admissionSemester: Types.ObjectId;
   isDeleted: boolean;
+  academicDepartment: Types.ObjectId;
 };
 
 //for creating static method
