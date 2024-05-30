@@ -10,8 +10,6 @@ const getAllStudentFromDB = async () => {
     });
   return result;
 };
-//single students data
-
 const getSingleStudentsDB = async (id: string) => {
   const result = await StudentModel.findOne({ id })
     .populate('admissionSemester')
@@ -21,8 +19,6 @@ const getSingleStudentsDB = async (id: string) => {
     });
   return result;
 };
-//delete students data
-
 const deleteStudentsDB = async (id: string) => {
   const result = await StudentModel.updateOne({ id }, { isDeleted: true });
   return result;
