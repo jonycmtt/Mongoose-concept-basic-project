@@ -36,6 +36,45 @@ const CreateStudentSchemaValidateWithZod = z.object({
   }),
 });
 
+const updatedUserNameSchema = z.object({
+  firstName: z
+    .string()
+    .min(1, 'Name can not be less than 1 characters')
+    .optional(),
+  middleName: z.string().optional(),
+  lastName: z.string().optional(),
+});
+
+const updatedUserGuardianSchema = z.object({
+  fatherName: z.string().optional(),
+  motherName: z.string().optional(),
+  fatherContactNo: z.string().optional(),
+  motherContactNo: z.string().optional(),
+});
+const UpdatedStudentSchemaValidateWithZod = z.object({
+  body: z.object({
+    password: z.string().max(20).optional(),
+    student: z.object({
+      name: updatedUserNameSchema.optional(),
+      gender: z.enum(['male', 'female']).optional(),
+      dateOfBirth: z.string().optional().optional(),
+      email: z.string().email('Invalid email format').optional(),
+      contactNo: z.number().optional(),
+      emergencyContactNo: z.string().optional(),
+      bloodGroup: z
+        .enum(['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'])
+        .optional(),
+      presentAddress: z.string().optional(),
+      permanentAddress: z.string().optional(),
+      guardian: updatedUserGuardianSchema.optional(),
+      admissionSemester: z.string().optional(),
+      academicDepartment: z.string().optional(),
+      avatar: z.string().optional().optional(),
+    }),
+  }),
+});
+
 export const studentSchemaValidates = {
-  studentSchemaValidateWithZod: CreateStudentSchemaValidateWithZod,
+  CreateStudentSchemaValidateWithZod,
+  UpdatedStudentSchemaValidateWithZod,
 };

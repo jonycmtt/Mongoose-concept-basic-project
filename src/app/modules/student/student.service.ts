@@ -3,6 +3,7 @@ import { StudentModel } from './student.model';
 import { userModel } from '../user/user.model';
 import AppError from '../../errors/AppError';
 import httpStatus from 'http-status';
+import { Student } from './student.interface';
 
 // get all data
 const getAllStudentFromDB = async () => {
@@ -73,8 +74,30 @@ const deleteStudentsDB = async (id: string) => {
   }
 };
 
+const updateStudentIntoDB = async (id: string, payload: Partial<Student>) => {
+  const { name, guardian, ...remainingStudentData } = payload;
+
+  const modifiedUpdatedData: Record<string, unknown> = {
+    ...remainingStudentData,
+  };
+
+  if (name && Object.keys(name).length) {
+    for (const [key, value] of Object.entries(name)) {
+      modifiedUpdatedData[`name.${key}`] = value;
+    }
+  }
+  if (guardian && Object.keys(guardian).length) {
+    for (const [key, value] of Object.entries(guardian)) {
+      modifiedUpdatedData[`guardian.${key}`] = value;
+    }
+  }
+
+  return await StudentModel.findOneAndUpdate({ id }, modifiedUpdatedData);
+};
+
 export const StudentServices = {
   getAllStudentFromDB,
   getSingleStudentsDB,
   deleteStudentsDB,
+  updateStudentIntoDB,
 };
