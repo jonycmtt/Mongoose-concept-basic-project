@@ -93,11 +93,15 @@ const studentSchema = new Schema<Student, CustomStaticStudentModel>(
     avatar: String,
     admissionSemester: {
       type: Schema.Types.ObjectId,
-      ref: 'AcademicSemester',
+      ref: 'academicSemester',
     },
     isDeleted: {
       type: Boolean,
       default: false,
+    },
+    academicDepartment: {
+      type: Schema.Types.ObjectId,
+      ref: 'academicDepartment',
     },
   },
   {

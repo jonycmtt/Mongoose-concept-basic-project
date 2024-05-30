@@ -18,7 +18,7 @@ router.get(
   AcademicDepartmentControllers.getSingleAcademicDepartment,
 );
 
-router.post(
+router.patch(
   '/:departmentId',
   validateRequest(
     AcademicDepartmentValidations.updateAcademicDepartmentValidationSchema,

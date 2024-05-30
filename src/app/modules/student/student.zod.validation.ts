@@ -30,6 +30,7 @@ const CreateStudentSchemaValidateWithZod = z.object({
       permanentAddress: z.string(),
       guardian: userGuardianSchema,
       admissionSemester: z.string(),
+      academicDepartment: z.string(),
       avatar: z.string().optional(),
     }),
   }),
