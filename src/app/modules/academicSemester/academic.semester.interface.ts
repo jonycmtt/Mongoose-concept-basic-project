@@ -23,7 +23,6 @@ export type TAcademicSemester = {
   endMonth: TMonths;
 };
 
-// check academic semester name and code
 export type TAcademicSemesterNameCodeWrapper = {
   [key: string]: string;
 };
