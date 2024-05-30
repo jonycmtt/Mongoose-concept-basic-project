@@ -2,6 +2,8 @@ import { TAcademicSemester } from './academic.semester.interface';
 import { academicSemesterModel } from './academic.semester.model';
 import { academicSemesterNameCodeWrapper } from './academicSemester.constant';
 
+
+// create
 const createAcademicSemesterIntoDB = async (payload: TAcademicSemester) => {
   if (academicSemesterNameCodeWrapper[payload.name] !== payload.code) {
     throw new Error('Invalid Semester Code');
