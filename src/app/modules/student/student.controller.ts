@@ -1,13 +1,11 @@
-import { NextFunction, Request, RequestHandler, Response } from 'express';
 import { StudentServices } from './student.service';
-import studentSchema from './student.joi.validation';
-import { z } from 'zod';
 import sendResponse from '../../Utils/SendResponse';
 import httpStatus from 'http-status';
 import catchAsync from '../../Utils/catchAsync';
 
 const getAllStudents = catchAsync(async (req, res, next) => {
-  const result = await StudentServices.getAllStudentFromDB();
+  // console.log(req.query);
+  const result = await StudentServices.getAllStudentFromDB(req.query);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
