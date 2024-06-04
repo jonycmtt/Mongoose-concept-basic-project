@@ -32,13 +32,18 @@ const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
     statusCode = simplifiedError.statusCode;
     message = simplifiedError.message;
     errorSources = simplifiedError.errorSource;
+  } else if (err?.code === 11000) {
+    const simplifiedError = handleDuplicateError(err);
+    statusCode = simplifiedError.statusCode;
+    message = simplifiedError.message;
+    errorSources = simplifiedError.errorSource;
   }
 
   return res.status(statusCode).json({
     success: false,
     message,
     errorSources,
-    // err,
+    err,
     stack: config.NODE_ENV === 'development' ? err?.stack : null,
   });
 };
