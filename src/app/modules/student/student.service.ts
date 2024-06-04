@@ -22,18 +22,31 @@ const getAllStudentFromDB = async (query: Record<string, unknown>) => {
   });
 
   // filtering
-  const excludeFields = ['searchTerm'];
+  const excludeFields = ['searchTerm', 'sort', 'limit'];
   excludeFields.forEach((ele) => delete queryObj[ele]);
-  console.log(query, queryObj);
 
-  const result = await searchQuery
+  const filterQuery = searchQuery
     .find(queryObj)
     .populate('admissionSemester')
     .populate({
       path: 'academicDepartment',
       populate: 'academicFaculty',
     });
-  return result;
+
+  let sort = '-createAt';
+  if (query.sort) {
+    sort = query.sort as string;
+  }
+
+  let limitValue = 1;
+
+  if (query.limit) {
+    limitValue = query.limit as number;
+  }
+
+  const sortQuery = await filterQuery.sort(sort).limit(limitValue);
+
+  return sortQuery;
 };
 const getSingleStudentsDB = async (id: string) => {
   const result = await StudentModel.findOne({ id })
