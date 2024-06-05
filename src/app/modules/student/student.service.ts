@@ -72,7 +72,7 @@ const getAllStudentFromDB = async (query: Record<string, unknown>) => {
   return result;
 };
 const getSingleStudentsDB = async (id: string) => {
-  const result = await StudentModel.findOne({ id })
+  const result = await StudentModel.findById(id)
     .populate('admissionSemester')
     .populate({
       path: 'academicDepartment',
@@ -85,44 +85,45 @@ const deleteStudentsDB = async (id: string) => {
   try {
     session.startTransaction();
 
-    const studentExists = await StudentModel.findOne({ id }).session(session);
+    const studentExists = await StudentModel.findById(id).session(session);
 
     if (!studentExists) {
       throw new AppError(httpStatus.NOT_FOUND, 'Student Id not found');
     }
 
-    const deleteStudent = await StudentModel.findOneAndUpdate(
-      { id },
+    const deletedStudent = await StudentModel.findByIdAndUpdate(
+      id,
       { isDeleted: true },
-      {
-        new: true,
-        session,
-      },
+      { new: true, session },
     );
 
-    if (!deleteStudent) {
-      throw new AppError(httpStatus.BAD_REQUEST, 'Failed to Delete student');
+    if (!deletedStudent) {
+      throw new AppError(httpStatus.BAD_REQUEST, 'Failed to delete student');
     }
 
-    const userExists = await userModel.findOne({ id }).session(session);
+    // get user _id from deletedStudent
+
+    const userId = deletedStudent.user;
+    const userExists = await userModel.findById(userId).session(session);
 
     if (!userExists) {
       throw new AppError(httpStatus.NOT_FOUND, 'User Id not found');
     }
 
-    const deleteUser = await userModel.findOneAndUpdate(
-      { id },
+    const deletedUser = await userModel.findByIdAndUpdate(
+      userId,
       { isDeleted: true },
       { new: true, session },
     );
 
-    if (!deleteUser) {
-      throw new AppError(httpStatus.BAD_REQUEST, 'Failed to Delete student');
+    if (!deletedUser) {
+      throw new AppError(httpStatus.BAD_REQUEST, 'Failed to delete user');
     }
+
     await session.commitTransaction();
     await session.endSession();
 
-    return deleteStudent;
+    return deletedStudent;
   } catch (err) {
     await session.abortTransaction();
     await session.endSession();
@@ -148,7 +149,7 @@ const updateStudentIntoDB = async (id: string, payload: Partial<Student>) => {
     }
   }
 
-  return await StudentModel.findOneAndUpdate({ id }, modifiedUpdatedData);
+  return await StudentModel.findByIdAndUpdate(id, modifiedUpdatedData);
 };
 
 export const StudentServices = {
