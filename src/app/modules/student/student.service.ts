@@ -4,8 +4,8 @@ import { userModel } from '../user/user.model';
 import AppError from '../../errors/AppError';
 import httpStatus from 'http-status';
 import { Student } from './student.interface';
-import QueryBuilder from '../../builder/queryBuilder';
 import { studentSearchableFields } from './student.constant';
+import QueryBuilder from '../../builder/QueryBuilder';
 
 // get all data
 const getAllStudentFromDB = async (query: Record<string, unknown>) => {
