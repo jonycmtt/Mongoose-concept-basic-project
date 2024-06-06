@@ -11,18 +11,15 @@ router.post(
   ),
   academicSemesterControllers.createAcademicSemester,
 );
-router.get(
-  '/create-academic-semester',
-  academicSemesterControllers.getAllAcademicSemester,
-);
+router.get('/', academicSemesterControllers.getAllAcademicSemester);
 
 router.get(
-  '/create-academic-semester/:semesterId',
+  '/:semesterId',
   academicSemesterControllers.getSingleAcademicSemester,
 );
 
 router.patch(
-  '/create-academic-semester/:semesterId',
+  '/:semesterId',
   validateRequest(
     academicSemesterValidations.updateAcademicSemesterValidationSchema,
   ),

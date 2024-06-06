@@ -1,4 +1,4 @@
-import { Schema, model } from 'mongoose';
+import mongoose, { Schema, model } from 'mongoose';
 import { TAcademicSemester } from './academic.semester.interface';
 import {
   academicSemesterCode,
@@ -7,7 +7,7 @@ import {
 } from './academicSemester.constant';
 import AppError from '../../errors/AppError';
 
-const AcademicSemesterSchema = new Schema<TAcademicSemester>(
+const AcademicSemesterSchema = new mongoose.Schema<TAcademicSemester>(
   {
     name: { type: String, required: true, enum: academicSemesterName },
     code: {
