@@ -2,9 +2,9 @@ import httpStatus from 'http-status';
 import AppError from '../../errors/AppError';
 import { academicSemesterModel } from '../academicSemester/academic.semester.model';
 import { TSemesterRegistration } from './semesterRegistration.interface';
-import { SemesterRegistrationModel } from './semesterRagistration.model';
 import QueryBuilder from '../../builder/QueryBuilder';
 import { semesterRegistrationStatusObj } from './semesterRegistration.constant';
+import { SemesterRegistrationModel } from './semesterRegistration.model';
 
 const createSemesterRegistrationIntoDB = async (
   payload: TSemesterRegistration,
